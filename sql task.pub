@@ -1,0 +1,89 @@
+...............................1> Table Creation.............................................................................
+
+USER => create table user (id int primary key auto_increment, name varchar(20), email varchar(20), menorId int, foreign key(mentorId) references mentors(id));
+CODEKATA => create table codekata (id int primary key auto_increment, userID int, problemSolved int, foreign key (userID) references user(id) );
+ATTENDANCE => create table attendance(id int primary key auto_increment, userID int, daysAttended int, totalDays int, foreign key (userID) references user(id) );
+TOPICS => create table topics(id int primary key auto_increment, topicName varchar(100), description varchar(200));
+COMPANY_DRIVES => create table company_drives(id int primary key auto_increment, userID int, numberOfDrives int, foreign key(userId) references user(id));
+MENTORS => create table mentors(id int primary key auto_increment, mentorName int, mentorEmail varchar(20));
+STUDENT_ACTIVATED_COURSES => create table studentActivatedCourses(id int primary key auto_increment, userId int, courseId int, foreign key(userId) references user(id), foreign key(courseId) references courses(id) );
+COURSES => create table courses(id int primary key auto_increment, courseName varchar(20), duration int);
+
+
+............................2> Inserting Values.............................................................................
+
+=> MENTORS
+insert into mentors (mentorName, mentorEmail) values("Krishna", "krishna@gmail.com");
+insert into mentors (mentorName, mentorEmail) values("Raghav", "raghav@gmail.com");
+insert into mentors (mentorName, mentorEmail) values("Bhuvan", "bhuvan@gmail.com");
+insert into mentors (mentorName, mentorEmail) values("Sameer", "sameer@gmail.com");
+insert into mentors (mentorName, mentorEmail) values("Kavita", "kavita@gmail.com");
+
+=> USER
+insert into user (name, email, mentorId) values("Kewal", "kewal@gmail.com", 1);
+insert into user (name, email, mentorId) values("Sahil", "sahil@gmail.com", 3);
+insert into user (name, email, mentorId) values("Reshma", "reshma@gmail.com", 2);   
+insert into user (name, email, mentorId) values("Kiran", "kiran@gmail.com", 1);
+insert into user (name, email, mentorId) values("Sameer", "sameer@gmail.com", 4);  
+insert into user (name, email, mentorId) values("Venkat", "venkat@gmail.com", 1);
+
+=>CODEKATA
+insert into codekata (userId, problemSolved) values(5, 60);
+insert into codekata (userId, problemSolved) values(1, 80);
+insert into codekata (userId, problemSolved) values(3, 30);
+insert into codekata (userId, problemSolved) values(4, 70);
+insert into codekata (userId, problemSolved) values(2, 65);
+
+=>ATTENDANCE
+insert into attendance (userId, daysAttended, totalDays) values(1, 94, 100);
+insert into attendance (userId, daysAttended, totalDays) values(2, 9, 100);
+insert into attendance (userId, daysAttended, totalDays) values(3, 98, 100);
+insert into attendance (userId, daysAttended, totalDays) values(4, 89, 100);
+insert into attendance (userId, daysAttended, totalDays) values(5, 91, 100);
+ 
+=>TOPICS
+insert into topics (topicName, description) values ("HTML", "Frontend Technology");
+insert into topics (topicName, description) values ("CSS", "Styling Technology");
+insert into topics (topicName, description) values ("JavaScript", "Functioning of website");
+insert into topics (topicName, description) values ("React", "Single Page Application");
+insert into topics (topicName, description) values ("MongoDB", "Database Technology");
+
+=>COMPANY_DRIVES
+insert into company_drives (userId, numberOfDrives) values(1, 20);
+insert into company_drives (userId, numberOfDrives) values(2, 10);
+insert into company_drives (userId, numberOfDrives) values(3, 25);
+insert into company_drives (userId, numberOfDrives) values(4, 20);
+insert into company_drives (userId, numberOfDrives) values(5, 6);
+
+=>COURSES
+insert into courses (courseName, duration) values("Frontend", 10);
+insert into courses (courseName, duration) values("Backend", 15);
+insert into courses (courseName, duration) values("Database", 12);
+insert into courses (courseName, duration) values("Testing", 20);
+insert into courses (courseName, duration) values("DataScience", 100);
+
+=>STUDENT_ACTIVATED_COURSES
+insert into studentActivatedCourses (userId, courseId) values(1, 5);
+insert into studentActivatedCourses (userId, courseId) values(2, 5);
+insert into studentActivatedCourses (userId, courseId) values(3, 3);
+insert into studentActivatedCourses (userId, courseId) values(4, 1);
+insert into studentActivatedCourses (userId, courseId) values(5, 2);
+
+
+
+............................3> get number problems solved in codekata by combining the users................................
+select name, problemSolved from user inner join codekata on user.id=codekata.userId;
+
+............................4> display the no of company drives attended by a user..........................................
+select name, numberOfDrives from user inner join company_drives on user.id=company_drives.userId;
+
+............................5> combine and display students_activated_courses and courses for a specific user groping them based on the course.................................
+select  courseName, count(*) as activated from studentActivatedCourses join courses on courses.id=studentActivatedCourses.courseId group by courseName; 
+
+............................6> list all the mentors.........................................................................
+
+select * from mentors;
+
+............................7> list the number of students that are assigned for a mentor...................................
+
+select mentorName, count(*) as numberOfStudents from user join mentors on mentors.id = user.MentorId group by mentorName
